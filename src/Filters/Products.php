@@ -98,6 +98,14 @@ class Products
         // Get full list of matching products
         $fullProductList = $this->searchAdapter->execute();
 
+        // WHY: the price post filter drops products the SQL could not exclude, because the index
+        // holds one price envelope per product across every customer group and specific price. It
+        // has to run over the whole list, before the count and before the page is cut: running it
+        // on the page alone announced a total nobody could reach, left short or empty pages, and
+        // made a dropped product vanish from the listing entirely rather than pull the next one
+        // forward.
+        $this->pricePostFiltering($fullProductList, $selectedFilters);
+
         // Count them
         $totalProductCount = count($fullProductList);
 
@@ -111,9 +119,6 @@ class Products
             ($page - 1) * $productsPerPage,
             $productsPerPage
         );
-
-        // And run post filter
-        $this->pricePostFiltering($finalProductList, $selectedFilters);
 
         return [
             'products' => $finalProductList,
@@ -170,8 +175,17 @@ class Products
     ) {
         /* for this case, price could be out of range, so we need to compute the real price */
         foreach ($matchingProductList as $key => $product) {
-            if (($product['price_min'] < (int) $priceFilter['min'] && $product['price_max'] > (int) $priceFilter['min'])
-                || ($product['price_max'] > (int) $priceFilter['max'] && $product['price_min'] < (int) $priceFilter['max'])
+            // WHY: the indexed envelope spans every customer group and specific price, so the real
+            // price for this visitor is only guaranteed to be in range when the whole envelope is.
+            // Anything sticking out on either side has to be recomputed. The previous test asked
+            // whether the envelope straddled a bound, which is a strict subset: a product selected
+            // by the inclusive SQL filter (price_min <= max) whose price_min landed exactly on the
+            // upper bound satisfied neither straddle, was never rechecked, and stayed in the listing
+            // at its real price. The bounds are also no longer truncated with (int) - they are
+            // DECIMAL(20, 6) on one side and the visitor's requested range on the other, and
+            // rounding the range outwards silently widened it.
+            if ($product['price_min'] < $priceFilter['min']
+                || $product['price_max'] > $priceFilter['max']
             ) {
                 $price = Product::getPriceStatic($product['id_product'], $psLayeredFilterPriceUsetax);
                 if ($psLayeredFilterPriceRounding) {
