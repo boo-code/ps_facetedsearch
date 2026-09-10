@@ -1035,7 +1035,7 @@ class Ps_Facetedsearch extends Module implements WidgetInterface
             `filter_show_limit` int(10) UNSIGNED NOT NULL DEFAULT 0,
             KEY `id_category_shop` (`id_category`, `id_shop`, `type`, id_value, `position`),
             KEY `id_category` (`id_category`,`type`)
-            ) ENGINE=' . _MYSQL_ENGINE_ . ' DEFAULT CHARSET=utf8;'
+            ) ENGINE=' . _MYSQL_ENGINE_ . ' DEFAULT CHARSET=utf8mb4;'
         );
 
         $this->getDatabase()->execute(
@@ -1045,14 +1045,14 @@ class Ps_Facetedsearch extends Module implements WidgetInterface
             `filters` LONGTEXT NULL,
             `n_categories` INT(10) UNSIGNED NOT NULL,
             `date_add` DATETIME NOT NULL
-            ) ENGINE=' . _MYSQL_ENGINE_ . ' DEFAULT CHARSET=utf8;'
+            ) ENGINE=' . _MYSQL_ENGINE_ . ' DEFAULT CHARSET=utf8mb4;'
         );
 
         $this->getDatabase()->execute(
             'CREATE TABLE IF NOT EXISTS `' . _DB_PREFIX_ . 'layered_filter_block` (
             `hash` CHAR(32) NOT NULL DEFAULT "" PRIMARY KEY,
             `data` LONGTEXT NULL
-            ) ENGINE=' . _MYSQL_ENGINE_ . ' DEFAULT CHARSET=utf8;'
+            ) ENGINE=' . _MYSQL_ENGINE_ . ' DEFAULT CHARSET=utf8mb4;'
         );
 
         $this->getDatabase()->execute(
@@ -1061,7 +1061,7 @@ class Ps_Facetedsearch extends Module implements WidgetInterface
             `id_shop` INT(11) UNSIGNED NOT NULL,
             PRIMARY KEY (`id_layered_filter`, `id_shop`),
             KEY `id_shop` (`id_shop`)
-            ) ENGINE=' . _MYSQL_ENGINE_ . ' DEFAULT CHARSET=utf8;'
+            ) ENGINE=' . _MYSQL_ENGINE_ . ' DEFAULT CHARSET=utf8mb4;'
         );
     }
 
@@ -1458,7 +1458,7 @@ VALUES(' . $last_id . ', ' . (int) $idShop . ')');
             INDEX `id_currency` (`id_currency`),
             INDEX `price_min` (`price_min`),
             INDEX `price_max` (`price_max`)
-            ) ENGINE=' . _MYSQL_ENGINE_ . ' DEFAULT CHARSET=utf8;'
+            ) ENGINE=' . _MYSQL_ENGINE_ . ' DEFAULT CHARSET=utf8mb4;'
         );
     }
 
@@ -1476,7 +1476,7 @@ VALUES(' . $last_id . ', ' . (int) $idShop . ')');
             `id_shop` int(10) unsigned NOT NULL DEFAULT "1",
             PRIMARY KEY (`id_attribute`, `id_product`, `id_shop`),
             UNIQUE KEY `id_attribute_group` (`id_attribute_group`,`id_attribute`,`id_product`, `id_shop`)
-            ) ENGINE=' . _MYSQL_ENGINE_ . ' DEFAULT CHARSET=utf8;'
+            ) ENGINE=' . _MYSQL_ENGINE_ . ' DEFAULT CHARSET=utf8mb4;'
         );
     }
 
@@ -1492,7 +1492,7 @@ VALUES(' . $last_id . ', ' . (int) $idShop . ')');
             `id_attribute_group` INT NOT NULL,
             `indexable` BOOL NOT NULL DEFAULT 0,
             PRIMARY KEY (`id_attribute_group`)
-            ) ENGINE=' . _MYSQL_ENGINE_ . ' DEFAULT CHARSET=utf8;'
+            ) ENGINE=' . _MYSQL_ENGINE_ . ' DEFAULT CHARSET=utf8mb4;'
         );
         $this->getDatabase()->execute(
             'INSERT INTO `' . _DB_PREFIX_ . 'layered_indexable_attribute_group` (id_attribute_group)
@@ -1507,7 +1507,7 @@ VALUES(' . $last_id . ', ' . (int) $idShop . ')');
             `url_name` VARCHAR(128),
             `meta_title` VARCHAR(128),
             PRIMARY KEY (`id_attribute_group`, `id_lang`)
-            ) ENGINE=' . _MYSQL_ENGINE_ . ' DEFAULT CHARSET=utf8;'
+            ) ENGINE=' . _MYSQL_ENGINE_ . ' DEFAULT CHARSET=utf8mb4;'
         );
 
         // Attributes
@@ -1519,7 +1519,7 @@ VALUES(' . $last_id . ', ' . (int) $idShop . ')');
             `url_name` VARCHAR(128),
             `meta_title` VARCHAR(128),
             PRIMARY KEY (`id_attribute`, `id_lang`)
-           )  ENGINE=' . _MYSQL_ENGINE_ . ' DEFAULT CHARSET=utf8;'
+           )  ENGINE=' . _MYSQL_ENGINE_ . ' DEFAULT CHARSET=utf8mb4;'
         );
 
         // Features
@@ -1529,7 +1529,7 @@ VALUES(' . $last_id . ', ' . (int) $idShop . ')');
             `id_feature` INT NOT NULL,
             `indexable` BOOL NOT NULL DEFAULT 0,
             PRIMARY KEY (`id_feature`)
-            ) ENGINE=' . _MYSQL_ENGINE_ . ' DEFAULT CHARSET=utf8;'
+            ) ENGINE=' . _MYSQL_ENGINE_ . ' DEFAULT CHARSET=utf8mb4;'
         );
 
         $this->getDatabase()->execute(
@@ -1545,7 +1545,7 @@ VALUES(' . $last_id . ', ' . (int) $idShop . ')');
             `url_name` VARCHAR(128) NOT NULL,
             `meta_title` VARCHAR(128),
             PRIMARY KEY (`id_feature`, `id_lang`)
-            ) ENGINE=' . _MYSQL_ENGINE_ . ' DEFAULT CHARSET=utf8;'
+            ) ENGINE=' . _MYSQL_ENGINE_ . ' DEFAULT CHARSET=utf8mb4;'
         );
 
         // Features values
@@ -1557,7 +1557,7 @@ VALUES(' . $last_id . ', ' . (int) $idShop . ')');
             `url_name` VARCHAR(128),
             `meta_title` VARCHAR(128),
             PRIMARY KEY (`id_feature_value`, `id_lang`)
-            ) ENGINE=' . _MYSQL_ENGINE_ . ' DEFAULT CHARSET=utf8;'
+            ) ENGINE=' . _MYSQL_ENGINE_ . ' DEFAULT CHARSET=utf8mb4;'
         );
     }
 
